@@ -603,7 +603,14 @@
                 <div style="font-size: 14px; margin-top: 4px;">رقم الطلب: <strong id="orderNumber"></strong></div>
             </div>
 
-            <form id="bookingForm" novalidate>
+            <!-- Added Netlify attribute to form -->
+            <form id="bookingForm" name="nursing-service-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+                <!-- Hidden field for Netlify honeypot -->
+                <input type="hidden" name="form-name" value="nursing-service-request">
+                <div class="bot-field" style="display:none;">
+                    <label>Don't fill this out if you're human: <input name="bot-field"></label>
+                </div>
+                
                 <!-- Step 1: Patient Information -->
                 <div class="form-step active" id="step-1">
                     <div class="form-group">
@@ -949,7 +956,7 @@
                 document.getElementById('prevStep2').addEventListener('click', () => this.goToStep(1));
                 document.getElementById('prevStep3').addEventListener('click', () => this.goToStep(2));
 
-                // Form submission
+                // Form submission - Modified for Netlify
                 document.getElementById('bookingForm').addEventListener('submit', (e) => this.handleSubmit(e));
                 
                 // Real-time validation
@@ -1111,15 +1118,52 @@
                 document.getElementById('submitText').textContent = 'جاري الإرسال...';
 
                 try {
-                    const order = await this.api.request('/orders', this.formData);
+                    // Prepare form data for Netlify
+                    const formData = new FormData(document.getElementById('bookingForm'));
                     
-                    this.showSuccess(order);
-                    this.clearDraft();
+                    // Add service data to form
+                    if (this.selectedService) {
+                        formData.append('service', this.selectedService.name);
+                        formData.append('serviceId', this.selectedService.id);
+                    }
                     
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'conversion');
+                    // Add patient data
+                    if (this.formData.patient) {
+                        Object.entries(this.formData.patient).forEach(([key, value]) => {
+                            formData.append(key, value);
+                        });
+                    }
+                    
+                    // Add other form data
+                    if (this.formData.urgency) formData.append('urgency', this.formData.urgency);
+                    if (this.formData.medicalHistory) formData.append('medicalHistory', this.formData.medicalHistory);
+                    if (this.formData.notes) formData.append('notes', this.formData.notes);
+                    
+                    // Submit to Netlify
+                    const response = await fetch('/', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams(formData).toString()
+                    });
+                    
+                    if (response.ok) {
+                        const order = { 
+                            id: this.generateId(), 
+                            timestamp: new Date().toISOString(),
+                            ...this.formData
+                        };
+                        
+                        this.showSuccess(order);
+                        this.clearDraft();
+                        
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'conversion');
+                        }
+                    } else {
+                        throw new Error('Form submission failed');
                     }
                 } catch (error) {
+                    console.error('Form submission error:', error);
                     this.notifier.show('حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى.', 'error');
                 } finally {
                     submitBtn.disabled = false;
@@ -1127,6 +1171,8 @@
                     document.getElementById('submitText').textContent = originalText;
                 }
             }
+
+            generateId() { return 'ORD' + Date.now().toString(36).toUpperCase(); }
 
             showSuccess(order) {
                 document.getElementById('bookingForm').style.display = 'none';
@@ -1136,7 +1182,7 @@
                 document.getElementById('orderNumber').textContent = order.id;
                 document.getElementById('successMessage').classList.add('show');
                 
-                this.notifier.show(order.offline ? 'تم حفظ طلبك محلياً.' : 'تم إرسال طلبك بنجاح!', 'success');
+                this.notifier.show('تم إرسال طلبك بنجاح!', 'success');
                 
                 document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
