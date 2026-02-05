@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ma Santé - خدمات تمريض منزلية في أكادير</title>
+    <meta name="description" content="احجز خدمات تمريض منزلية احترافية في أكادير بسهولة. فحص مختبر، تضميد الجروح، إعطاء الحقن.">
+    <meta name="keywords" content="تمريض منزلي, رعاية صحية, أكادير, حقن, تضميد, فحص مختبر">
+    <meta name="author" content="Ma Santé">
+    <meta property="og:title" content="Ma Santé - خدمات تمريض منزلية في أكادير">
+    <meta property="og:description" content="احجز خدمات تمريض منزلية احترافية في أكادير بسهولة">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://example.com/og-image.jpg">
+    <meta name="theme-color" content="#0EA5E9">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts - Cairo for better Arabic rendering -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💉</text></svg>">
+    
+    <style>
+        /* CSS Variables for Easy Customization */
+        :root {
+            --primary-color: #0EA5E9;
+            --primary-dark: #0284C7;
+            --secondary-color: #10B981;
+            --success-color: #059669;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --text-color: #1F2937;
+            --text-light: #6B7280;
+            --bg-color: #F9FAFB;
+            --white: #FFFFFF;
+            --border-color: #E5E7EB;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .logo:hover { color: var(--primary-dark); }
+
+        .logo i {
+            font-size: 24px;
+        }
+
+        .header-phone {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: rgba(14, 165, 233, 0.1);
+            transition: var(--transition);
+        }
+        .header-phone:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Notification System */
+        .notification-container {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .notification {
+            background: var(--white);
+            color: var(--text-color);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.9);
+            transition: var(--transition);
+            pointer-events: all;
+            border-right: 4px solid var(--primary-color);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .notification.success { border-right-color: var(--success-color); color: var(--success-color); }
+        .notification.error { border-right-color: var(--danger-color); color: var(--danger-color); }
+        .notification.warning { border-right-color: var(--warning-color); color: var(--warning-color); }
+
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--warning-color);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: none;
+            z-index: 101;
+            box-shadow: var(--shadow);
+            animation: slideDown 0.3s ease;
+        }
+        .connection-status.offline { display: flex; align-items: center; gap: 6px; }
+        @keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #EBF8FF 0%, #FFFFFF 100%);
+            padding: 50px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+        }
+        .btn:hover::before { left: 100%; }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:active { transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-secondary { background: var(--secondary-color); }
+        .btn-secondary:hover { background: #059669; }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .btn-outline:hover { background: var(--primary-color); color: var(--white); }
+
+        /* Multi-Step Form */
+        .order-form {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            margin: 40px 0;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .form-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .form-step-indicator {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+        .progress-step.active { border-color: var(--primary-color); color: var(--primary-color); background: rgba(14, 165, 233, 0.1); }
+        .progress-step.completed { border-color: var(--secondary-color); color: var(--secondary-color); background: rgba(16, 185, 129, 0.1); }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .form-step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* Validation States */
+        .field-wrapper { position: relative; }
+        .validation-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .validation-icon.valid { color: var(--success-color); left: 12px; }
+        .validation-icon.invalid { color: var(--danger-color); left: 12px; }
+        .validation-icon.show { opacity: 1; }
+        .form-input.has-icon { padding-right: 40px; padding-left: 40px; }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        .error-message.show { display: block; animation: fadeIn 0.2s ease; }
+
+        /* Service Selection */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            position: relative;
+        }
+        .service-card:hover { border-color: var(--primary-color); background: rgba(14, 165, 233, 0.02); }
+        .service-card:focus { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+        .service-card.selected {
+            border-color: var(--primary-color);
+            background: rgba(14, 165, 233, 0.05);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+        .service-card.error { border-color: var(--danger-color); animation: shake 0.5s ease; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .service-card.selected .service-icon { background: var(--primary-color); color: var(--white); }
+
+        .service-info h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .service-info p { font-size: 14px; color: var(--text-light); }
+
+        /* Summary Section */
+        .summary-box {
+            background: #F9FAFB;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .summary-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-color);
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-item .label { color: var(--text-light); }
+        .summary-item .value { font-weight: 500; color: var(--text-color); }
+
+        /* Form Buttons */
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+        .form-buttons .btn { flex: 1; }
+
+        /* Loading States */
+        .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 0.8s linear infinite;
+        }
+        .btn.loading .spinner { display: inline-block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: #D1FAE5;
+            color: #065F46;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            font-weight: 500;
+        }
+        .success-message.show { display: block; animation: fadeIn 0.5s ease; }
+
+        /* WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #25D366;
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--white);
+            padding: 24px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+        .footer-text { font-size: 14px; color: var(--text-light); }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container { padding: 0 12px; }
+            .hero-title { font-size: 26px; }
+            .form-row { grid-template-columns: 1fr; }
+            .order-form { padding: 24px 20px; }
+            .notification { min-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Connection Status -->
+    <div class="connection-status" id="connectionStatus" role="status" aria-live="polite">
+        <i class="fas fa-wifi"></i>
+        <span>وضع عدم الاتصال - سيتم حفظ الطلبات محلياً</span>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo" aria-label="Ma Santé الصفحة الرئيسية">
+                    <i class="fas fa-heart"></i>
+                    <span>Ma Santé</span>
+                </a>
+                <a href="tel:+212728073253" class="header-phone" aria-label="اتصل بنا على 0728073253">
+                    <i class="fas fa-phone"></i>
+                    <span>0728073253</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" role="banner">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">رعاية تمريضية محترفة<br>في راحة منزلك</h1>
+                <p class="hero-subtitle">فحص مختبر، تضميد الجروح، وإعطاء الحقن بأعلى معايير الجودة</p>
+                <button class="btn" id="orderNowBtn">
+                    <i class="fas fa-check-circle"></i>
+                    احجز الآن
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Form Section -->
+    <main class="order-form" id="order-form" role="main">
+        <div class="container">
+            <div class="form-header">
+                <h2 class="form-title">طلب خدمة تمريضية</h2>
+                <div class="form-step-indicator">
+                    الخطوة <span id="currentStep">1</span> من 3
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3">
+                <div class="progress-step active" data-step="1">1</div>
+                <div class="progress-step" data-step="2">2</div>
+                <div class="progress-step" data-step="3">3</div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage" role="alert">
+                <i class="fas fa-check-circle" style="font-size: 24px; margin-bottom: 8px;"></i>
+                <div>تم إرسال طلبك بنجاح!</div>
+                <div style="font-size: 14px; margin-top: 4px;">رقم الطلب: <strong id="orderNumber">-</strong></div>
+            </div>
+
+            <form id="bookingForm" name="booking" novalidate data-netlify="true">
+                <!-- Step 1: Patient Information -->
+                <div class="form-step active" id="step-1">
+                    <h3 style="margin-bottom: 24px; font-size: 18px;">معلومات المريض</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="patientName">اسم المريض *</label>
+                        <div class="field-wrapper">
+                            <i class="fas fa-check validation-icon valid" id="patientName-icon"></i>
+                            <input type="text" id="patientName" name="patientName" class="form-input has-icon" placeholder="أدخل اسم المريض" required aria-required="true" aria-describedby="patientName-error">
+                        </div>
+                        <div class="error-message" id="patientName-error" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phone">رقم الهاتف *</label>
+                        <div class="field-wrapper">
+                            <i class="fas fa-check validation-icon valid" id="phone-icon"></i>
+                            <input type="tel" id="phone" name="phone" class="form-input has-icon" placeholder="0628073253" inputmode="numeric" maxlength="10" required aria-required="true" aria-describedby="phone-error">
+                        </div>
+                        <div class="error-message" id="phone-error" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="address">العنوان *</label>
+                        <div class="field-wrapper">
+                            <i class="fas fa-check validation-icon valid" id="address-icon"></i>
+                            <input type="text" id="address" name="address" class="form-input has-icon" placeholder="الحي والشارع" required aria-required="true" aria-describedby="address-error">
+                        </div>
+                        <div class="error-message" id="address-error" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="urgency">مستوى الإلحاح *</label>
+                        <select id="urgency" name="urgency" class="form-select" required aria-required="true">
+                            <option value="">اختر مستوى الإلحاح</option>
+                            <option value="normal">عادي (24-48 ساعة)</option>
+                            <option value="urgent">مستعجل (4-6 ساعات)</option>
+                            <option value="very-urgent">جداً مستعجل (1-2 ساعة)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-secondary" id="nextStep1" style="flex: 1;">
+                            التالي <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Service Selection -->
+                <div class="form-step" id="step-2">
+                    <h3 style="margin-bottom: 24px; font-size: 18px;">اختر الخدمة</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">الخدمة المطلوبة *</label>
+                        <div class="services-grid" id="servicesGrid" role="radiogroup" aria-label="اختر الخدمة المطلوبة"></div>
+                        <div class="error-message" id="service-error" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="medicalHistory">التاريخ الطبي (اختياري)</label>
+                        <textarea id="medicalHistory" name="medicalHistory" class="form-textarea" placeholder="أي معلومات طبية مهمة نريد أن نعرفها؟"></textarea>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-outline" id="prevStep2">
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="nextStep2">
+                            التالي <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Confirmation -->
+                <div class="form-step" id="step-3">
+                    <h3 style="margin-bottom: 24px; font-size: 18px;">تأكيد الطلب</h3>
+                    
+                    <div class="summary-box">
+                        <div class="summary-title">ملخص الطلب</div>
+                        <div id="orderSummary"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="terms" name="terms" required style="width: 20px; height: 20px; cursor: pointer;">
+                            <span>أوافق على شروط الخدمة والسياسة الخاصة</span>
+                        </label>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-outline" id="prevStep3">
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </button>
+                        <button type="submit" class="btn btn-secondary" id="submitBtn">
+                            <span class="spinner"></span>
+                            تأكيد الطلب
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p class="footer-text">© 2024 Ma Santé. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/212728073253" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="تواصل معنا عبر واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // ===== STORAGE UTILITY =====
+        class StorageManager {
+            static get(key) {
+                try {
+                    return localStorage.getItem(key);
+                } catch (e) {
+                    console.warn('localStorage unavailable:', e);
+                    return null;
+                }
+            }
+            static set(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                } catch (e) {
+                    console.warn('localStorage unavailable:', e);
+                }
+            }
+            static remove(key) {
+                try {
+                    localStorage.removeItem(key);
+                } catch (e) {
+                    console.warn('localStorage unavailable:', e);
+                }
+            }
+        }
+
+        // ===== CONFIGURATION =====
+        const CONFIG = {
+            API_ENDPOINT: '/api',
+            SERVICES: [
+                { id: 'lab-test', name: 'الفحص المختبر', icon: 'fa-vial', description: 'فحص دم وتحاليل طبية' },
+                { id: 'dressing', name: 'تضميد الجروح', icon: 'fa-band-aid', description: 'تنظيف وتضميد احترافي' },
+                { id: 'injection', name: 'إعطاء الحقن', icon: 'fa-syringe', description: 'حقن بأمان وكفاءة' }
+            ],
+            DRAFT_KEY: 'masante_form_draft'
+        };
+
+        // ===== NOTIFICATION MANAGER =====
+        class NotificationManager {
+            constructor() {
+                this.container = document.getElementById('notificationContainer');
+            }
+
+            show(message, type = 'info', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.setAttribute('role', 'alert');
+                notification.setAttribute('aria-live', 'assertive');
+                
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-times-circle',
+                    warning: 'fa-exclamation-triangle',
+                    info: 'fa-info-circle'
+                };
+                
+                notification.innerHTML = `
+                    <i class="fas ${icons[type] || icons.info}"></i>
+                    <span>${message}</span>
+                `;
+                
+                this.container.appendChild(notification);
+                
+                setTimeout(() => notification.classList.add('show'), 10);
+                
+                if (duration > 0) {
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => notification.remove(), 300);
+                    }, duration);
+                }
+            }
+        }
+
+        // ===== FORM VALIDATOR =====
+        class FormValidator {
+            constructor() {
+                this.rules = {
+                    patientName: [
+                        { 
+                            rule: (value) => value.trim().length > 0, 
+                            message: 'يرجى إدخال اسم المريض' 
+                        },
+                        { 
+                            rule: (value) => value.trim().length >= 3, 
+                            message: 'الاسم يجب أن يكون أطول من 3 أحرف' 
+                        }
+                    ],
+                    phone: [
+                        { 
+                            rule: (value) => value.trim().length > 0, 
+                            message: 'يرجى إدخال رقم الهاتف' 
+                        },
+                        { 
+                            rule: (value) => /^0[67]\d{8}$/.test(value), 
+                            message: 'صيغة الرقم غير صحيحة' 
+                        }
+                    ],
+                    address: [
+                        { 
+                            rule: (value) => value.trim().length > 0, 
+                            message: 'يرجى إدخال العنوان' 
+                        },
+                        { 
+                            rule: (value) => value.trim().length >= 5, 
+                            message: 'العنوان يجب أن يكون أطول من 5 أحرف' 
+                        }
+                    ],
+                    urgency: [
+                        { 
+                            rule: (value) => value.trim().length > 0, 
+                            message: 'يرجى اختيار مستوى الإلحاح' 
+                        }
+                    ]
+                };
+            }
+
+            validateField(fieldId, value) {
+                const fieldRules = this.rules[fieldId];
+                if (!fieldRules) return { isValid: true };
+
+                for (const { rule, message } of fieldRules) {
+                    if (!rule(value)) {
+                        return { isValid: false, message };
+                    }
+                }
+                return { isValid: true };
+            }
+
+            showValidation(fieldId, isValid, message = '') {
+                const icon = document.getElementById(`${fieldId}-icon`);
+                const errorEl = document.getElementById(`${fieldId}-error`);
+                const input = document.getElementById(fieldId);
+                
+                if (icon) {
+                    icon.className = `fas fa-${isValid ? 'check-circle' : 'times-circle'} validation-icon ${isValid ? 'valid' : 'invalid'} show`;
+                }
+                
+                if (errorEl) {
+                    if (isValid) {
+                        errorEl.classList.remove('show');
+                    } else {
+                        errorEl.textContent = message;
+                        errorEl.classList.add('show');
+                    }
+                }
+
+                if (input) {
+                    input.style.borderColor = isValid ? 'var(--border-color)' : 'var(--danger-color)';
+                }
+            }
+
+            clearValidation(fieldId) {
+                const icon = document.getElementById(`${fieldId}-icon`);
+                const errorEl = document.getElementById(`${fieldId}-error`);
+                const input = document.getElementById(fieldId);
+                
+                if (icon) icon.classList.remove('show');
+                if (errorEl) errorEl.classList.remove('show');
+                if (input) input.style.borderColor = 'var(--border-color)';
+            }
+        }
+
+        // ===== API CLIENT =====
+        class ApiClient {
+            constructor(notifier) {
+                this.notifier = notifier;
+                this.isOnline = navigator.onLine;
+                this.offlineQueue = this.loadQueue();
+                this.initListeners();
+            }
+
+            loadQueue() {
+                try {
+                    return JSON.parse(StorageManager.get('offlineQueue') || '[]');
+                } catch {
+                    return [];
+                }
+            }
+
+            initListeners() {
+                window.addEventListener('online', () => this.syncQueue());
+                window.addEventListener('offline', () => this.showOfflineStatus());
+            }
+
+            async request(endpoint, data) {
+                if (!this.isOnline) {
+                    return this.queueRequest(endpoint, data);
+                }
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return await response.json();
+                } catch (error) {
+                    console.error('API Error:', error);
+                    this.notifier.show('حدث خطأ في الاتصال. سيتم حفظ طلبك.', 'error');
+                    return this.queueRequest(endpoint, data);
+                }
+            }
+
+            queueRequest(endpoint, data) {
+                const order = {
+                    ...data,
+                    id: this.generateId(),
+                    timestamp: new Date().toISOString(),
+                    offline: true
+                };
+                this.offlineQueue.push(order);
+                StorageManager.set('offlineQueue', JSON.stringify(this.offlineQueue));
+                return order;
+            }
+
+            async syncQueue() {
+                if (this.offlineQueue.length === 0) return;
+                
+                const queue = [...this.offlineQueue];
+                this.offlineQueue = [];
+                StorageManager.remove('offlineQueue');
+
+                for (const order of queue) {
+                    try {
+                        await fetch(CONFIG.API_ENDPOINT, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(order)
+                        });
+                    } catch (error) {
+                        this.offlineQueue.push(order);
+                    }
+                }
+                
+                if (this.offlineQueue.length > 0) {
+                    StorageManager.set('offlineQueue', JSON.stringify(this.offlineQueue));
+                } else {
+                    this.hideOfflineStatus();
+                    this.notifier.show('تم مزامنة جميع الطلبات بنجاح', 'success');
+                }
+            }
+
+            generateId() { return 'ORD' + Date.now().toString(36).toUpperCase(); }
+            showOfflineStatus() { document.getElementById('connectionStatus').classList.add('offline'); }
+            hideOfflineStatus() { document.getElementById('connectionStatus').classList.remove('offline'); }
+        }
+
+        // ===== FORM MANAGER =====
+        class FormManager {
+            constructor(notifier, validator, apiClient) {
+                this.notifier = notifier;
+                this.validator = validator;
+                this.api = apiClient;
+                this.currentStep = 1;
+                this.formData = {};
+                this.selectedService = null;
+                
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.renderServices();
+                this.loadDraft();
+            }
+
+            setupEventListeners() {
+                document.getElementById('nextStep1').addEventListener('click', () => this.goToStep(2));
+                document.getElementById('nextStep2').addEventListener('click', () => this.goToStep(3));
+                document.getElementById('prevStep2').addEventListener('click', () => this.goToStep(1));
+                document.getElementById('prevStep3').addEventListener('click', () => this.goToStep(2));
+
+                document.getElementById('bookingForm').addEventListener('submit', (e) => this.handleSubmit(e));
+                
+                document.getElementById('patientName').addEventListener('blur', (e) => this.validateFieldOnBlur('patientName', e.target.value));
+                document.getElementById('phone').addEventListener('input', (e) => this.formatPhone(e.target));
+                document.getElementById('phone').addEventListener('blur', (e) => this.validateFieldOnBlur('phone', e.target.value));
+                document.getElementById('address').addEventListener('blur', (e) => this.validateFieldOnBlur('address', e.target.value));
+                document.getElementById('urgency').addEventListener('change', () => this.validator.clearValidation('urgency'));
+                
+                document.getElementById('bookingForm').addEventListener('input', () => this.saveDraft());
+
+                document.getElementById('orderNowBtn').addEventListener('click', () => {
+                    document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+
+            renderServices() {
+                const grid = document.getElementById('servicesGrid');
+                grid.innerHTML = CONFIG.SERVICES.map(service => `
+                    <div class="service-card" data-service-id="${service.id}" role="radio" aria-checked="false" tabindex="0">
+                        <div class="service-icon"><i class="fas ${service.icon}"></i></div>
+                        <div class="service-info">
+                            <h3>${service.name}</h3>
+                            <p>${service.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                grid.addEventListener('click', (e) => {
+                    const card = e.target.closest('.service-card');
+                    if (card) this.selectService(card);
+                });
+
+                grid.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        const card = e.target.closest('.service-card');
+                        if (card) {
+                            e.preventDefault();
+                            this.selectService(card);
+                        }
+                    }
+                });
+            }
+
+            selectService(card) {
+                document.querySelectorAll('.service-card').forEach(c => {
+                    c.classList.remove('selected');
+                    c.setAttribute('aria-checked', 'false');
+                });
+                card.classList.add('selected');
+                card.setAttribute('aria-checked', 'true');
+
+                const serviceId = card.dataset.serviceId;
+                this.selectedService = CONFIG.SERVICES.find(s => s.id === serviceId);
+                this.validator.clearValidation('service');
+            }
+
+            formatPhone(input) {
+                let value = input.value.replace(/\D/g, '');
+                if (value.length > 10) value = value.slice(0, 10);
+                input.value = value;
+            }
+
+            validateFieldOnBlur(fieldId, value) {
+                const validation = this.validator.validateField(fieldId, value);
+                this.validator.showValidation(fieldId, validation.isValid, validation.message);
+                return validation.isValid;
+            }
+
+            validateCurrentStep() {
+                let isValid = true;
+                if (this.currentStep === 1) {
+                    isValid = this.validateFieldOnBlur('patientName', document.getElementById('patientName').value) && isValid;
+                    isValid = this.validateFieldOnBlur('phone', document.getElementById('phone').value) && isValid;
+                    isValid = this.validateFieldOnBlur('address', document.getElementById('address').value) && isValid;
+                    isValid = this.validateFieldOnBlur('urgency', document.getElementById('urgency').value) && isValid;
+                } else if (this.currentStep === 2) {
+                    if (!this.selectedService) {
+                        const errorEl = document.getElementById('service-error');
+                        errorEl.textContent = 'يرجى اختيار خدمة';
+                        errorEl.classList.add('show');
+                        isValid = false;
+                    }
+                }
+                return isValid;
+            }
+
+            goToStep(step) {
+                if (step > this.currentStep && !this.validateCurrentStep()) return;
+
+                this.saveStepData(this.currentStep);
+
+                document.getElementById(`step-${this.currentStep}`).classList.remove('active');
+                document.getElementById(`step-${step}`).classList.add('active');
+                
+                document.querySelectorAll('.progress-step').forEach((el, index) => {
+                    el.classList.toggle('completed', index + 1 < step);
+                    el.classList.toggle('active', index + 1 === step);
+                });
+
+                const progressBar = document.querySelector('.progress-bar');
+                progressBar.setAttribute('aria-valuenow', step);
+
+                document.getElementById('currentStep').textContent = step;
+                this.currentStep = step;
+
+                if (step === 3) {
+                    this.populateSummary();
+                }
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            saveStepData(step) {
+                if (step === 1) {
+                    this.formData.patientName = document.getElementById('patientName').value;
+                    this.formData.phone = document.getElementById('phone').value;
+                    this.formData.address = document.getElementById('address').value;
+                    this.formData.urgency = document.getElementById('urgency').value;
+                } else if (step === 2) {
+                    this.formData.medicalHistory = document.getElementById('medicalHistory').value;
+                    if (this.selectedService) {
+                        this.formData.service = this.selectedService;
+                    }
+                }
+            }
+
+            populateSummary() {
+                const summary = document.getElementById('orderSummary');
+                const urgencyText = this.getUrgencyText(this.formData.urgency);
+                
+                summary.innerHTML = `
+                    <div class="summary-item">
+                        <span class="label">الاسم:</span>
+                        <span class="value">${this.formData.patientName || '-'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">الهاتف:</span>
+                        <span class="value">${this.formData.phone || '-'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">العنوان:</span>
+                        <span class="value">${this.formData.address || '-'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">الخدمة:</span>
+                        <span class="value">${this.selectedService?.name || '-'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">الإلحاح:</span>
+                        <span class="value">${urgencyText}</span>
+                    </div>
+                `;
+            }
+
+            getUrgencyText(urgency) {
+                const map = {
+                    'normal': 'عادي (24-48 ساعة)',
+                    'urgent': 'مستعجل (4-6 ساعات)',
+                    'very-urgent': 'جداً مستعجل (1-2 ساعة)'
+                };
+                return map[urgency] || '-';
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+
+                if (!document.getElementById('terms').checked) {
+                    this.notifier.show('يرجى قبول شروط الخدمة', 'error');
+                    return;
+                }
+
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+
+                const formData = {
+                    patientName: this.formData.patientName,
+                    phone: this.formData.phone,
+                    address: this.formData.address,
+                    service: this.selectedService?.id,
+                    urgency: this.formData.urgency,
+                    medicalHistory: this.formData.medicalHistory,
+                    timestamp: new Date().toISOString()
+                };
+
+                try {
+                    const result = await this.api.request(CONFIG.API_ENDPOINT, formData);
+                    this.showSuccess(result);
+                } catch (error) {
+                    this.notifier.show('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.', 'error');
+                } finally {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }
+            }
+
+            showSuccess(order) {
+                document.getElementById('bookingForm').style.display = 'none';
+                document.getElementById('successMessage').classList.add('show');
+                document.getElementById('orderNumber').textContent = order.id;
+                
+                this.notifier.show('تم إرسال طلبك بنجاح! سنتواصل معك قريباً.', 'success', 8000);
+                
+                this.clearDraft();
+                
+                setTimeout(() => {
+                    document.getElementById('bookingForm').style.display = 'block';
+                    document.getElementById('successMessage').classList.remove('show');
+                    document.getElementById('bookingForm').reset();
+                    this.selectedService = null;
+                    this.formData = {};
+                    this.goToStep(1);
+                }, 5000);
+            }
+
+            saveDraft() {
+                const draft = {
+                    patientName: document.getElementById('patientName').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    urgency: document.getElementById('urgency').value,
+                    medicalHistory: document.getElementById('medicalHistory').value,
+                    serviceId: this.selectedService?.id,
+                    timestamp: new Date().toISOString()
+                };
+                StorageManager.set(CONFIG.DRAFT_KEY, JSON.stringify(draft));
+            }
+
+            loadDraft() {
+                const draft = StorageManager.get(CONFIG.DRAFT_KEY);
+                if (draft) {
+                    try {
+                        const data = JSON.parse(draft);
+                        this.populateFormFromDraft(data);
+                    } catch (e) {
+                        console.warn('Invalid draft:', e);
+                    }
+                }
+            }
+
+            populateFormFromDraft(draft) {
+                if (draft.patientName) document.getElementById('patientName').value = draft.patientName;
+                if (draft.phone) document.getElementById('phone').value = draft.phone;
+                if (draft.address) document.getElementById('address').value = draft.address;
+                if (draft.urgency) document.getElementById('urgency').value = draft.urgency;
+                if (draft.medicalHistory) document.getElementById('medicalHistory').value = draft.medicalHistory;
+                
+                if (draft.serviceId) {
+                    const card = document.querySelector(`[data-service-id="${draft.serviceId}"]`);
+                    if (card) this.selectService(card);
+                }
+            }
+
+            clearDraft() {
+                StorageManager.remove(CONFIG.DRAFT_KEY);
+            }
+        }
+<a href="https://marketplace.visualstudio.com/items?itemName=publishername.extensionname">
+    <img src="https://vsmarketplacebadges.dev/badge_title/publishername.extensionname.svg" alt="badge_title">
+</a>
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', () => {
+            const notifier = new NotificationManager();
+            const validator = new FormValidator();
+            const apiClient = new ApiClient(notifier);
+            new FormManager(notifier, validator, apiClient);
+        });
+    </script>
+</body>
+</html>
