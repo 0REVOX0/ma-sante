@@ -163,26 +163,6 @@
         .notification.error { border-right-color: var(--danger-color); color: var(--danger-color); }
         .notification.warning { border-right-color: var(--warning-color); color: var(--warning-color); }
 
-        /* Connection Status */
-        .connection-status {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--warning-color);
-            color: var(--white);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            display: none;
-            z-index: 101;
-            box-shadow: var(--shadow);
-            animation: slideDown 0.3s ease;
-        }
-        .connection-status.offline { display: flex; align-items: center; gap: 6px; }
-        @keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #EBF8FF 0%, #FFFFFF 100%);
@@ -540,12 +520,6 @@
     </style>
 </head>
 <body>
-    <!-- Connection Status -->
-    <div class="connection-status offline" id="connectionStatus" role="status" aria-live="polite">
-        <i class="fas fa-wifi"></i>
-        <span>وضع عدم الاتصال - سيتم حفظ الطلبات محلياً</span>
-    </div>
-
     <!-- Notification Container -->
     <div class="notification-container" id="notificationContainer" aria-live="polite"></div>
 
@@ -866,18 +840,15 @@
             initListeners() {
                 window.addEventListener('online', () => {
                     this.isOnline = true;
-                    this.hideOfflineStatus();
                     this.syncQueue();
                 });
                 window.addEventListener('offline', () => {
                     this.isOnline = false;
-                    this.showOfflineStatus();
                 });
             }
 
             async request(endpoint, data) {
                 if (!this.isOnline) {
-                    this.notifier.show('لا يوجد اتصال بالإنترنت. سيتم إرسال الطلب لاحقاً.', 'warning');
                     return this.queueRequest(endpoint, data);
                 }
 
@@ -891,7 +862,6 @@
                     if (!response.ok) throw new Error('Network response was not ok.');
                     return await response.json();
                 } catch (error) {
-                    this.notifier.show('فشل الاتصال بالخادم. سيتم حفظ الطلب محلياً.', 'error');
                     return this.queueRequest(endpoint, data);
                 }
             }
@@ -926,8 +896,6 @@
             }
 
             generateId() { return 'ORD' + Date.now().toString(36).toUpperCase(); }
-            showOfflineStatus() { document.getElementById('connectionStatus').classList.add('offline'); }
-            hideOfflineStatus() { document.getElementById('connectionStatus').classList.remove('offline'); }
         }
 
         // ===== FORM MANAGER =====
