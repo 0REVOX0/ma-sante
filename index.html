@@ -413,7 +413,6 @@
             position: relative;
         }
         .service-card:hover { border-color: var(--primary-color); background: rgba(14, 165, 233, 0.02); }
-        .service-card:focus { outline: 2px solid var(--primary-color); outline-offset: 2px; }
         .service-card.selected {
             border-color: var(--primary-color);
             background: rgba(14, 165, 233, 0.05);
@@ -537,31 +536,30 @@
             .hero-title { font-size: 26px; }
             .form-row { grid-template-columns: 1fr; }
             .order-form { padding: 24px 20px; }
-            .notification { min-width: 280px; }
         }
     </style>
 </head>
 <body>
     <!-- Connection Status -->
-    <div class="connection-status" id="connectionStatus" role="status" aria-live="polite">
+    <div class="connection-status offline" id="connectionStatus" role="status" aria-live="polite">
         <i class="fas fa-wifi"></i>
         <span>وضع عدم الاتصال - سيتم حفظ الطلبات محلياً</span>
     </div>
 
     <!-- Notification Container -->
-    <div class="notification-container" id="notificationContainer" aria-live="polite" aria-atomic="true"></div>
+    <div class="notification-container" id="notificationContainer" aria-live="polite"></div>
 
     <!-- Header -->
     <header class="header" role="banner">
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo" aria-label="Ma Santé الصفحة الرئيسية">
-                    <i class="fas fa-heart"></i>
-                    <span>Ma Santé</span>
+                    <i class="fas fa-heartbeat"></i>
+                    Ma Santé
                 </a>
-                <a href="tel:+212728073253" class="header-phone" aria-label="اتصل بنا على 0728073253">
+                <a href="tel:0728073253" class="header-phone" aria-label="اتصل بنا على 0728073253">
                     <i class="fas fa-phone"></i>
-                    <span>0728073253</span>
+                    0728073253
                 </a>
             </div>
         </div>
@@ -573,10 +571,10 @@
             <div class="hero-content">
                 <h1 class="hero-title">رعاية تمريضية محترفة<br>في راحة منزلك</h1>
                 <p class="hero-subtitle">فحص مختبر، تضميد الجروح، وإعطاء الحقن بأعلى معايير الجودة</p>
-                <button class="btn" id="orderNowBtn">
-                    <i class="fas fa-check-circle"></i>
-                    احجز الآن
-                </button>
+                <a href="#order-form" class="btn" id="orderNowBtn">
+                    <i class="fas fa-calendar-check"></i>
+                    اطلب الخدمة الآن
+                </a>
             </div>
         </div>
     </section>
@@ -602,106 +600,128 @@
             <div class="success-message" id="successMessage" role="alert">
                 <i class="fas fa-check-circle" style="font-size: 24px; margin-bottom: 8px;"></i>
                 <div>تم إرسال طلبك بنجاح!</div>
-                <div style="font-size: 14px; margin-top: 4px;">رقم الطلب: <strong id="orderNumber">-</strong></div>
+                <div style="font-size: 14px; margin-top: 4px;">رقم الطلب: <strong id="orderNumber"></strong></div>
             </div>
 
-            <form id="bookingForm" name="booking" novalidate data-netlify="true">
+            <form id="bookingForm" novalidate>
                 <!-- Step 1: Patient Information -->
                 <div class="form-step active" id="step-1">
-                    <h3 style="margin-bottom: 24px; font-size: 18px;">معلومات المريض</h3>
-                    
                     <div class="form-group">
-                        <label class="form-label" for="patientName">اسم المريض *</label>
+                        <label class="form-label" for="patientName">اسم المريض الكامل *</label>
                         <div class="field-wrapper">
-                            <i class="fas fa-check validation-icon valid" id="patientName-icon"></i>
-                            <input type="text" id="patientName" name="patientName" class="form-input has-icon" placeholder="أدخل اسم المريض" required aria-required="true" aria-describedby="patientName-error">
+                            <i class="fas fa-user validation-icon valid" id="patientName-icon"></i>
+                            <input type="text" id="patientName" name="patientName" class="form-input has-icon" required aria-required="true" aria-describedby="patientName-error">
                         </div>
                         <div class="error-message" id="patientName-error" role="alert"></div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="phone">رقم الهاتف *</label>
-                        <div class="field-wrapper">
-                            <i class="fas fa-check validation-icon valid" id="phone-icon"></i>
-                            <input type="tel" id="phone" name="phone" class="form-input has-icon" placeholder="0628073253" inputmode="numeric" maxlength="10" required aria-required="true" aria-describedby="phone-error">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="phone">رقم الهاتف *</label>
+                            <div class="field-wrapper">
+                                <i class="fas fa-phone validation-icon valid" id="phone-icon"></i>
+                                <input type="tel" id="phone" name="phone" class="form-input has-icon" maxlength="10" required aria-required="true" aria-describedby="phone-error">
+                            </div>
+                            <div class="error-message" id="phone-error" role="alert"></div>
                         </div>
-                        <div class="error-message" id="phone-error" role="alert"></div>
+                        <div class="form-group">
+                            <label class="form-label" for="age">العمر (اختياري)</label>
+                            <div class="field-wrapper">
+                                <i class="fas fa-calendar validation-icon valid" id="age-icon"></i>
+                                <input type="number" id="age" name="age" class="form-input has-icon" min="0" max="120">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="address">العنوان *</label>
+                        <label class="form-label" for="address">العنوان الكامل *</label>
                         <div class="field-wrapper">
-                            <i class="fas fa-check validation-icon valid" id="address-icon"></i>
-                            <input type="text" id="address" name="address" class="form-input has-icon" placeholder="الحي والشارع" required aria-required="true" aria-describedby="address-error">
+                            <i class="fas fa-map-marker-alt validation-icon valid" id="address-icon"></i>
+                            <input type="text" id="address" name="address" class="form-input has-icon" required aria-required="true" aria-describedby="address-error">
                         </div>
                         <div class="error-message" id="address-error" role="alert"></div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="urgency">مستوى الإلحاح *</label>
-                        <select id="urgency" name="urgency" class="form-select" required aria-required="true">
-                            <option value="">اختر مستوى الإلحاح</option>
-                            <option value="normal">عادي (24-48 ساعة)</option>
-                            <option value="urgent">مستعجل (4-6 ساعات)</option>
-                            <option value="very-urgent">جداً مستعجل (1-2 ساعة)</option>
-                        </select>
-                    </div>
-
                     <div class="form-buttons">
-                        <button type="button" class="btn btn-secondary" id="nextStep1" style="flex: 1;">
-                            التالي <i class="fas fa-arrow-left"></i>
+                        <button type="button" class="btn btn-outline" disabled aria-label="الخطوة السابقة">
+                            <i class="fas fa-arrow-right"></i>
+                            السابق
+                        </button>
+                        <button type="button" class="btn" id="nextStep1" aria-label="الخطوة التالية">
+                            التالي
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Step 2: Service Selection -->
                 <div class="form-step" id="step-2">
-                    <h3 style="margin-bottom: 24px; font-size: 18px;">اختر الخدمة</h3>
-                    
                     <div class="form-group">
-                        <label class="form-label">الخدمة المطلوبة *</label>
-                        <div class="services-grid" id="servicesGrid" role="radiogroup" aria-label="اختر الخدمة المطلوبة"></div>
+                        <label class="form-label">اختر الخدمة المطلوبة *</label>
+                        <div class="services-grid" id="servicesGrid" role="radiogroup" aria-required="true" aria-describedby="service-error">
+                            <!-- Services will be populated by JS -->
+                        </div>
                         <div class="error-message" id="service-error" role="alert"></div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="medicalHistory">التاريخ الطبي (اختياري)</label>
-                        <textarea id="medicalHistory" name="medicalHistory" class="form-textarea" placeholder="أي معلومات طبية مهمة نريد أن نعرفها؟"></textarea>
+                        <label class="form-label" for="urgency">درجة الإلحاح</label>
+                        <select id="urgency" name="urgency" class="form-select">
+                            <option value="normal">عادي (خلال 24-48 ساعة)</option>
+                            <option value="urgent">عاجل (خلال 24 ساعة)</option>
+                            <option value="emergency">طارئ (أسرع وقت ممكن)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="medicalHistory">معلومات طبية إضافية (اختياري)</label>
+                        <textarea id="medicalHistory" name="medicalHistory" class="form-textarea" 
+                                  placeholder="أمراض مزمنة، حساسية، أدوية يتم تناولها..."></textarea>
                     </div>
 
                     <div class="form-buttons">
-                        <button type="button" class="btn btn-outline" id="prevStep2">
-                            <i class="fas fa-arrow-right"></i> السابق
+                        <button type="button" class="btn btn-outline" id="prevStep2" aria-label="الخطوة السابقة">
+                            <i class="fas fa-arrow-right"></i>
+                            السابق
                         </button>
-                        <button type="button" class="btn btn-secondary" id="nextStep2">
-                            التالي <i class="fas fa-arrow-left"></i>
+                        <button type="button" class="btn" id="nextStep2" aria-label="الخطوة التالية">
+                            التالي
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Step 3: Confirmation -->
                 <div class="form-step" id="step-3">
-                    <h3 style="margin-bottom: 24px; font-size: 18px;">تأكيد الطلب</h3>
-                    
                     <div class="summary-box">
-                        <div class="summary-title">ملخص الطلب</div>
-                        <div id="orderSummary"></div>
+                        <h3 class="summary-title">تأكيد تفاصيل الطلب</h3>
+                        <div id="orderSummary">
+                            <!-- Summary will be populated by JS -->
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="terms" name="terms" required style="width: 20px; height: 20px; cursor: pointer;">
-                            <span>أوافق على شروط الخدمة والسياسة الخاصة</span>
+                        <label class="form-label" for="notes">ملاحظات إضافية (اختياري)</label>
+                        <textarea id="notes" name="notes" class="form-textarea" 
+                                  placeholder="أي معلومات إضافية تود مشاركتها مع الممرض..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 15px;">
+                            <input type="checkbox" id="terms" name="terms" required style="width: auto; margin-top: 2px;">
+                            <span>أوافق على <a href="#" style="color: var(--primary-color);">الشروط والأحكام</a> و<code>سياسة الخصوصية</code></span>
                         </label>
                     </div>
 
                     <div class="form-buttons">
-                        <button type="button" class="btn btn-outline" id="prevStep3">
-                            <i class="fas fa-arrow-right"></i> السابق
+                        <button type="button" class="btn btn-outline" id="prevStep3" aria-label="الخطوة السابقة">
+                            <i class="fas fa-arrow-right"></i>
+                            السابق
                         </button>
-                        <button type="submit" class="btn btn-secondary" id="submitBtn">
-                            <span class="spinner"></span>
-                            تأكيد الطلب
+                        <button type="submit" class="btn btn-secondary" id="submitBtn" aria-label="إرسال الطلب">
+                            <i class="fas fa-check"></i>
+                            <span id="submitText">تأكيد الطلب</span>
+                            <div class="spinner" id="spinner"></div>
                         </button>
                     </div>
                 </div>
@@ -722,39 +742,13 @@
     </a>
 
     <script>
-        // ===== STORAGE UTILITY =====
-        class StorageManager {
-            static get(key) {
-                try {
-                    return localStorage.getItem(key);
-                } catch (e) {
-                    console.warn('localStorage unavailable:', e);
-                    return null;
-                }
-            }
-            static set(key, value) {
-                try {
-                    localStorage.setItem(key, value);
-                } catch (e) {
-                    console.warn('localStorage unavailable:', e);
-                }
-            }
-            static remove(key) {
-                try {
-                    localStorage.removeItem(key);
-                } catch (e) {
-                    console.warn('localStorage unavailable:', e);
-                }
-            }
-        }
-
         // ===== CONFIGURATION =====
         const CONFIG = {
-            API_ENDPOINT: '/api',
+            API_ENDPOINT: '/api', // Your backend endpoint
             SERVICES: [
-                { id: 'lab-test', name: 'الفحص المختبر', icon: 'fa-vial', description: 'فحص دم وتحاليل طبية' },
-                { id: 'dressing', name: 'تضميد الجروح', icon: 'fa-band-aid', description: 'تنظيف وتضميد احترافي' },
-                { id: 'injection', name: 'إعطاء الحقن', icon: 'fa-syringe', description: 'حقن بأمان وكفاءة' }
+                { id: 'lab-test', name: 'الفحص المختبر', icon: 'fa-vial' },
+                { id: 'dressing', name: 'تضميد الجروح', icon: 'fa-band-aid' },
+                { id: 'injection', name: 'إعطاء الحقن', icon: 'fa-syringe' }
             ],
             DRAFT_KEY: 'masante_form_draft'
         };
@@ -770,29 +764,31 @@
                 notification.className = `notification ${type}`;
                 notification.setAttribute('role', 'alert');
                 notification.setAttribute('aria-live', 'assertive');
-                
-                const icons = {
-                    success: 'fa-check-circle',
-                    error: 'fa-times-circle',
-                    warning: 'fa-exclamation-triangle',
-                    info: 'fa-info-circle'
-                };
-                
                 notification.innerHTML = `
-                    <i class="fas ${icons[type] || icons.info}"></i>
+                    <i class="fas fa-${this.getIcon(type)}"></i>
                     <span>${message}</span>
                 `;
                 
                 this.container.appendChild(notification);
                 
+                // Trigger animation
                 setTimeout(() => notification.classList.add('show'), 10);
                 
-                if (duration > 0) {
-                    setTimeout(() => {
-                        notification.classList.remove('show');
-                        setTimeout(() => notification.remove(), 300);
-                    }, duration);
-                }
+                // Auto-remove
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, duration);
+            }
+
+            getIcon(type) {
+                const icons = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    warning: 'exclamation-triangle',
+                    info: 'info-circle'
+                };
+                return icons[type] || 'info-circle';
             }
         }
 
@@ -801,40 +797,13 @@
             constructor() {
                 this.rules = {
                     patientName: [
-                        { 
-                            rule: (value) => value.trim().length > 0, 
-                            message: 'يرجى إدخال اسم المريض' 
-                        },
-                        { 
-                            rule: (value) => value.trim().length >= 3, 
-                            message: 'الاسم يجب أن يكون أطول من 3 أحرف' 
-                        }
+                        { rule: (v) => v.trim().length >= 3, message: 'الاسم يجب أن يكون 3 أحرف على الأقل' }
                     ],
                     phone: [
-                        { 
-                            rule: (value) => value.trim().length > 0, 
-                            message: 'يرجى إدخال رقم الهاتف' 
-                        },
-                        { 
-                            rule: (value) => /^0[67]\d{8}$/.test(value), 
-                            message: 'صيغة الرقم غير صحيحة' 
-                        }
+                        { rule: (v) => /^[0-9]{10}$/.test(v), message: 'رقم الهاتف يجب أن يكون 10 أرقام' }
                     ],
                     address: [
-                        { 
-                            rule: (value) => value.trim().length > 0, 
-                            message: 'يرجى إدخال العنوان' 
-                        },
-                        { 
-                            rule: (value) => value.trim().length >= 5, 
-                            message: 'العنوان يجب أن يكون أطول من 5 أحرف' 
-                        }
-                    ],
-                    urgency: [
-                        { 
-                            rule: (value) => value.trim().length > 0, 
-                            message: 'يرجى اختيار مستوى الإلحاح' 
-                        }
+                        { rule: (v) => v.trim().length >= 5, message: 'العنوان يجب أن يكون 5 أحرف على الأقل' }
                     ]
                 };
             }
@@ -854,10 +823,10 @@
             showValidation(fieldId, isValid, message = '') {
                 const icon = document.getElementById(`${fieldId}-icon`);
                 const errorEl = document.getElementById(`${fieldId}-error`);
-                const input = document.getElementById(fieldId);
                 
                 if (icon) {
-                    icon.className = `fas fa-${isValid ? 'check-circle' : 'times-circle'} validation-icon ${isValid ? 'valid' : 'invalid'} show`;
+                    icon.className = `validation-icon ${isValid ? 'valid' : 'invalid'} show`;
+                    icon.className = `fas fa-${isValid ? 'check' : 'times-circle'} validation-icon ${isValid ? 'valid' : 'invalid'} show`;
                 }
                 
                 if (errorEl) {
@@ -868,20 +837,13 @@
                         errorEl.classList.add('show');
                     }
                 }
-
-                if (input) {
-                    input.style.borderColor = isValid ? 'var(--border-color)' : 'var(--danger-color)';
-                }
             }
 
             clearValidation(fieldId) {
                 const icon = document.getElementById(`${fieldId}-icon`);
                 const errorEl = document.getElementById(`${fieldId}-error`);
-                const input = document.getElementById(fieldId);
-                
                 if (icon) icon.classList.remove('show');
                 if (errorEl) errorEl.classList.remove('show');
-                if (input) input.style.borderColor = 'var(--border-color)';
             }
         }
 
@@ -890,53 +852,47 @@
             constructor(notifier) {
                 this.notifier = notifier;
                 this.isOnline = navigator.onLine;
-                this.offlineQueue = this.loadQueue();
+                this.offlineQueue = JSON.parse(localStorage.getItem('offlineQueue') || '[]');
                 this.initListeners();
             }
 
-            loadQueue() {
-                try {
-                    return JSON.parse(StorageManager.get('offlineQueue') || '[]');
-                } catch {
-                    return [];
-                }
-            }
-
             initListeners() {
-                window.addEventListener('online', () => this.syncQueue());
-                window.addEventListener('offline', () => this.showOfflineStatus());
+                window.addEventListener('online', () => {
+                    this.isOnline = true;
+                    this.hideOfflineStatus();
+                    this.syncQueue();
+                });
+                window.addEventListener('offline', () => {
+                    this.isOnline = false;
+                    this.showOfflineStatus();
+                });
             }
 
             async request(endpoint, data) {
                 if (!this.isOnline) {
+                    this.notifier.show('لا يوجد اتصال بالإنترنت. سيتم إرسال الطلب لاحقاً.', 'warning');
                     return this.queueRequest(endpoint, data);
                 }
 
                 try {
-                    const response = await fetch(endpoint, {
+                    const response = await fetch(`${CONFIG.API_ENDPOINT}${endpoint}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
 
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    if (!response.ok) throw new Error('Network response was not ok.');
                     return await response.json();
                 } catch (error) {
-                    console.error('API Error:', error);
-                    this.notifier.show('حدث خطأ في الاتصال. سيتم حفظ طلبك.', 'error');
+                    this.notifier.show('فشل الاتصال بالخادم. سيتم حفظ الطلب محلياً.', 'error');
                     return this.queueRequest(endpoint, data);
                 }
             }
 
             queueRequest(endpoint, data) {
-                const order = {
-                    ...data,
-                    id: this.generateId(),
-                    timestamp: new Date().toISOString(),
-                    offline: true
-                };
+                const order = { ...data, id: this.generateId(), timestamp: new Date().toISOString(), offline: true };
                 this.offlineQueue.push(order);
-                StorageManager.set('offlineQueue', JSON.stringify(this.offlineQueue));
+                localStorage.setItem('offlineQueue', JSON.stringify(this.offlineQueue));
                 return order;
             }
 
@@ -945,25 +901,20 @@
                 
                 const queue = [...this.offlineQueue];
                 this.offlineQueue = [];
-                StorageManager.remove('offlineQueue');
+                localStorage.removeItem('offlineQueue');
 
                 for (const order of queue) {
                     try {
-                        await fetch(CONFIG.API_ENDPOINT, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(order)
-                        });
+                        await this.request('/orders', order);
                     } catch (error) {
                         this.offlineQueue.push(order);
                     }
                 }
                 
                 if (this.offlineQueue.length > 0) {
-                    StorageManager.set('offlineQueue', JSON.stringify(this.offlineQueue));
+                    localStorage.setItem('offlineQueue', JSON.stringify(this.offlineQueue));
                 } else {
-                    this.hideOfflineStatus();
-                    this.notifier.show('تم مزامنة جميع الطلبات بنجاح', 'success');
+                    this.notifier.show('تمت مزامنة جميع الطلبات بنجاح!', 'success');
                 }
             }
 
@@ -992,22 +943,27 @@
             }
 
             setupEventListeners() {
+                // Navigation
                 document.getElementById('nextStep1').addEventListener('click', () => this.goToStep(2));
                 document.getElementById('nextStep2').addEventListener('click', () => this.goToStep(3));
                 document.getElementById('prevStep2').addEventListener('click', () => this.goToStep(1));
                 document.getElementById('prevStep3').addEventListener('click', () => this.goToStep(2));
 
+                // Form submission
                 document.getElementById('bookingForm').addEventListener('submit', (e) => this.handleSubmit(e));
                 
+                // Real-time validation
                 document.getElementById('patientName').addEventListener('blur', (e) => this.validateFieldOnBlur('patientName', e.target.value));
                 document.getElementById('phone').addEventListener('input', (e) => this.formatPhone(e.target));
                 document.getElementById('phone').addEventListener('blur', (e) => this.validateFieldOnBlur('phone', e.target.value));
                 document.getElementById('address').addEventListener('blur', (e) => this.validateFieldOnBlur('address', e.target.value));
-                document.getElementById('urgency').addEventListener('change', () => this.validator.clearValidation('urgency'));
                 
+                // Draft saving
                 document.getElementById('bookingForm').addEventListener('input', () => this.saveDraft());
 
-                document.getElementById('orderNowBtn').addEventListener('click', () => {
+                // Smooth scroll
+                document.getElementById('orderNowBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
                     document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
                 });
             }
@@ -1019,7 +975,7 @@
                         <div class="service-icon"><i class="fas ${service.icon}"></i></div>
                         <div class="service-info">
                             <h3>${service.name}</h3>
-                            <p>${service.description}</p>
+                            <p>خدمة احترافية في منزلك</p>
                         </div>
                     </div>
                 `).join('');
@@ -1027,16 +983,6 @@
                 grid.addEventListener('click', (e) => {
                     const card = e.target.closest('.service-card');
                     if (card) this.selectService(card);
-                });
-
-                grid.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        const card = e.target.closest('.service-card');
-                        if (card) {
-                            e.preventDefault();
-                            this.selectService(card);
-                        }
-                    }
                 });
             }
 
@@ -1050,7 +996,7 @@
 
                 const serviceId = card.dataset.serviceId;
                 this.selectedService = CONFIG.SERVICES.find(s => s.id === serviceId);
-                this.validator.clearValidation('service');
+                this.validator.clearValidation('service'); // Clear any previous error
             }
 
             formatPhone(input) {
@@ -1065,37 +1011,22 @@
                 return validation.isValid;
             }
 
-            validateCurrentStep() {
-                let isValid = true;
-                if (this.currentStep === 1) {
-                    isValid = this.validateFieldOnBlur('patientName', document.getElementById('patientName').value) && isValid;
-                    isValid = this.validateFieldOnBlur('phone', document.getElementById('phone').value) && isValid;
-                    isValid = this.validateFieldOnBlur('address', document.getElementById('address').value) && isValid;
-                    isValid = this.validateFieldOnBlur('urgency', document.getElementById('urgency').value) && isValid;
-                } else if (this.currentStep === 2) {
-                    if (!this.selectedService) {
-                        const errorEl = document.getElementById('service-error');
-                        errorEl.textContent = 'يرجى اختيار خدمة';
-                        errorEl.classList.add('show');
-                        isValid = false;
-                    }
-                }
-                return isValid;
-            }
-
             goToStep(step) {
                 if (step > this.currentStep && !this.validateCurrentStep()) return;
 
+                // Save current step data
                 this.saveStepData(this.currentStep);
 
+                // Update UI
                 document.getElementById(`step-${this.currentStep}`).classList.remove('active');
                 document.getElementById(`step-${step}`).classList.add('active');
                 
                 document.querySelectorAll('.progress-step').forEach((el, index) => {
-                    el.classList.toggle('completed', index + 1 < step);
                     el.classList.toggle('active', index + 1 === step);
+                    el.classList.toggle('completed', index + 1 < step);
                 });
 
+                // Update progress bar aria attributes
                 const progressBar = document.querySelector('.progress-bar');
                 progressBar.setAttribute('aria-valuenow', step);
 
@@ -1105,158 +1036,156 @@
                 if (step === 3) {
                     this.populateSummary();
                 }
+            }
 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            validateCurrentStep() {
+                let isValid = true;
+                if (this.currentStep === 1) {
+                    const name = document.getElementById('patientName').value;
+                    const phone = document.getElementById('phone').value;
+                    const address = document.getElementById('address').value;
+                    
+                    isValid = this.validateFieldOnBlur('patientName', name) && isValid;
+                    isValid = this.validateFieldOnBlur('phone', phone) && isValid;
+                    isValid = this.validateFieldOnBlur('address', address) && isValid;
+                } else if (this.currentStep === 2) {
+                    if (!this.selectedService) {
+                        document.getElementById('servicesGrid').classList.add('error');
+                        document.getElementById('service-error').textContent = 'يرجى اختيار الخدمة المطلوبة';
+                        document.getElementById('service-error').classList.add('show');
+                        isValid = false;
+                    } else {
+                        document.getElementById('servicesGrid').classList.remove('error');
+                        document.getElementById('service-error').classList.remove('show');
+                    }
+                }
+                return isValid;
             }
 
             saveStepData(step) {
                 if (step === 1) {
-                    this.formData.patientName = document.getElementById('patientName').value;
-                    this.formData.phone = document.getElementById('phone').value;
-                    this.formData.address = document.getElementById('address').value;
-                    this.formData.urgency = document.getElementById('urgency').value;
+                    this.formData.patient = {
+                        name: document.getElementById('patientName').value,
+                        phone: document.getElementById('phone').value,
+                        age: document.getElementById('age').value,
+                        address: document.getElementById('address').value
+                    };
                 } else if (step === 2) {
+                    this.formData.service = this.selectedService;
+                    this.formData.urgency = document.getElementById('urgency').value;
                     this.formData.medicalHistory = document.getElementById('medicalHistory').value;
-                    if (this.selectedService) {
-                        this.formData.service = this.selectedService;
-                    }
+                } else if (step === 3) {
+                    this.formData.notes = document.getElementById('notes').value;
                 }
             }
 
             populateSummary() {
                 const summary = document.getElementById('orderSummary');
-                const urgencyText = this.getUrgencyText(this.formData.urgency);
-                
                 summary.innerHTML = `
-                    <div class="summary-item">
-                        <span class="label">الاسم:</span>
-                        <span class="value">${this.formData.patientName || '-'}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label">الهاتف:</span>
-                        <span class="value">${this.formData.phone || '-'}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label">العنوان:</span>
-                        <span class="value">${this.formData.address || '-'}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label">الخدمة:</span>
-                        <span class="value">${this.selectedService?.name || '-'}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label">الإلحاح:</span>
-                        <span class="value">${urgencyText}</span>
-                    </div>
+                    <div class="summary-item"><span class="label">اسم المريض:</span><span class="value">${this.formData.patient.name}</span></div>
+                    <div class="summary-item"><span class="label">رقم الهاتف:</span><span class="value">${this.formData.patient.phone}</span></div>
+                    <div class="summary-item"><span class="label">العنوان:</span><span class="value">${this.formData.patient.address}</span></div>
+                    <div class="summary-item"><span class="label">الخدمة:</span><span class="value">${this.formData.service.name}</span></div>
+                    <div class="summary-item"><span class="label">الإلحاح:</span><span class="value">${this.getUrgencyText(this.formData.urgency)}</span></div>
                 `;
             }
 
             getUrgencyText(urgency) {
-                const map = {
-                    'normal': 'عادي (24-48 ساعة)',
-                    'urgent': 'مستعجل (4-6 ساعات)',
-                    'very-urgent': 'جداً مستعجل (1-2 ساعة)'
-                };
-                return map[urgency] || '-';
+                const map = { normal: 'عادي', urgent: 'عاجل', emergency: 'طارئ' };
+                return map[urgency] || urgency;
             }
 
             async handleSubmit(e) {
                 e.preventDefault();
-
+                
                 if (!document.getElementById('terms').checked) {
-                    this.notifier.show('يرجى قبول شروط الخدمة', 'error');
+                    this.notifier.show('يرجى الموافقة على الشروط والأحكام', 'warning');
                     return;
                 }
 
                 const submitBtn = document.getElementById('submitBtn');
-                submitBtn.classList.add('loading');
+                const originalText = document.getElementById('submitText').textContent;
+                
                 submitBtn.disabled = true;
-
-                const formData = {
-                    patientName: this.formData.patientName,
-                    phone: this.formData.phone,
-                    address: this.formData.address,
-                    service: this.selectedService?.id,
-                    urgency: this.formData.urgency,
-                    medicalHistory: this.formData.medicalHistory,
-                    timestamp: new Date().toISOString()
-                };
+                submitBtn.classList.add('loading');
+                document.getElementById('submitText').textContent = 'جاري الإرسال...';
 
                 try {
-                    const result = await this.api.request(CONFIG.API_ENDPOINT, formData);
-                    this.showSuccess(result);
+                    const order = await this.api.request('/orders', this.formData);
+                    
+                    this.showSuccess(order);
+                    this.clearDraft();
+                    
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'conversion');
+                    }
                 } catch (error) {
-                    this.notifier.show('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.', 'error');
+                    this.notifier.show('حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى.', 'error');
                 } finally {
-                    submitBtn.classList.remove('loading');
                     submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    document.getElementById('submitText').textContent = originalText;
                 }
             }
 
             showSuccess(order) {
                 document.getElementById('bookingForm').style.display = 'none';
-                document.getElementById('successMessage').classList.add('show');
+                document.querySelector('.progress-bar').style.display = 'none';
+                document.querySelector('.form-header').style.display = 'none';
+                
                 document.getElementById('orderNumber').textContent = order.id;
+                document.getElementById('successMessage').classList.add('show');
                 
-                this.notifier.show('تم إرسال طلبك بنجاح! سنتواصل معك قريباً.', 'success', 8000);
+                this.notifier.show(order.offline ? 'تم حفظ طلبك محلياً.' : 'تم إرسال طلبك بنجاح!', 'success');
                 
-                this.clearDraft();
-                
-                setTimeout(() => {
-                    document.getElementById('bookingForm').style.display = 'block';
-                    document.getElementById('successMessage').classList.remove('show');
-                    document.getElementById('bookingForm').reset();
-                    this.selectedService = null;
-                    this.formData = {};
-                    this.goToStep(1);
-                }, 5000);
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
 
+            // Draft Management
             saveDraft() {
                 const draft = {
-                    patientName: document.getElementById('patientName').value,
-                    phone: document.getElementById('phone').value,
-                    address: document.getElementById('address').value,
-                    urgency: document.getElementById('urgency').value,
-                    medicalHistory: document.getElementById('medicalHistory').value,
-                    serviceId: this.selectedService?.id,
-                    timestamp: new Date().toISOString()
+                    ...this.formData,
+                    selectedServiceId: this.selectedService?.id,
+                    timestamp: Date.now()
                 };
-                StorageManager.set(CONFIG.DRAFT_KEY, JSON.stringify(draft));
+                localStorage.setItem(CONFIG.DRAFT_KEY, JSON.stringify(draft));
             }
 
             loadDraft() {
-                const draft = StorageManager.get(CONFIG.DRAFT_KEY);
-                if (draft) {
-                    try {
-                        const data = JSON.parse(draft);
-                        this.populateFormFromDraft(data);
-                    } catch (e) {
-                        console.warn('Invalid draft:', e);
-                    }
+                const draftData = localStorage.getItem(CONFIG.DRAFT_KEY);
+                if (!draftData) return;
+
+                const draft = JSON.parse(draftData);
+                const isRecent = (Date.now() - draft.timestamp) < 24 * 60 * 60 * 1000; // 24 hours
+
+                if (isRecent) {
+                    this.notifier.show('تم استعادة بياناتك المسجلة مسبقاً', 'info', 4000);
+                    this.populateFormFromDraft(draft);
+                } else {
+                    this.clearDraft();
                 }
             }
 
             populateFormFromDraft(draft) {
-                if (draft.patientName) document.getElementById('patientName').value = draft.patientName;
-                if (draft.phone) document.getElementById('phone').value = draft.phone;
-                if (draft.address) document.getElementById('address').value = draft.address;
+                if (draft.patient) {
+                    document.getElementById('patientName').value = draft.patient.name || '';
+                    document.getElementById('phone').value = draft.patient.phone || '';
+                    document.getElementById('age').value = draft.patient.age || '';
+                    document.getElementById('address').value = draft.patient.address || '';
+                }
                 if (draft.urgency) document.getElementById('urgency').value = draft.urgency;
                 if (draft.medicalHistory) document.getElementById('medicalHistory').value = draft.medicalHistory;
-                
-                if (draft.serviceId) {
-                    const card = document.querySelector(`[data-service-id="${draft.serviceId}"]`);
-                    if (card) this.selectService(card);
+                if (draft.notes) document.getElementById('notes').value = draft.notes;
+                if (draft.selectedServiceId) {
+                    document.querySelector(`.service-card[data-service-id="${draft.selectedServiceId}"]`)?.click();
                 }
             }
 
             clearDraft() {
-                StorageManager.remove(CONFIG.DRAFT_KEY);
+                localStorage.removeItem(CONFIG.DRAFT_KEY);
             }
         }
-<a href="https://marketplace.visualstudio.com/items?itemName=publishername.extensionname">
-    <img src="https://vsmarketplacebadges.dev/badge_title/publishername.extensionname.svg" alt="badge_title">
-</a>
+
         // ===== INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', () => {
             const notifier = new NotificationManager();
