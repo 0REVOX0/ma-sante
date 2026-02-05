@@ -10,7 +10,7 @@
     <meta property="og:title" content="Ma Santé - خدمات تمريض منزلية في أكادير">
     <meta property="og:description" content="احجز خدمات تمريض منزلية احترافية في أكادير بسهولة">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://example.com/og-image.jpg">
+    <meta property="og:image" content="https://z-cdn-media.chatglm.cn/files/96b4e4fc-2b0a-4f38-8190-73ea41b4286e.jpeg?auth_key=1870324977-b1d4f9e4b8724266911aa9fb6d123bff-0-ac0cfcbe1b18f2c159f8e5e535826744">
     <meta name="theme-color" content="#0EA5E9">
     
     <!-- Preconnect for performance -->
@@ -65,7 +65,7 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 16px;
         }
@@ -165,31 +165,81 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #EBF8FF 0%, #FFFFFF 100%);
-            padding: 50px 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+                        url('https://z-cdn-media.chatglm.cn/files/96b4e4fc-2b0a-4f38-8190-73ea41b4286e.jpeg?auth_key=1870324977-b1d4f9e4b8724266911aa9fb6d123bff-0-ac0cfcbe1b18f2c159f8e5e535826744') center/cover no-repeat;
+            padding: 80px 0;
             text-align: center;
             position: relative;
             overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
         }
 
         .hero-content {
             position: relative;
             z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .hero-title {
-            font-size: 32px;
+            font-size: 42px;
             font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 16px;
+            color: var(--white);
+            margin-bottom: 20px;
             line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .hero-subtitle {
-            font-size: 16px;
-            color: var(--text-light);
-            margin-bottom: 32px;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
+
+        .btn-hero {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        .btn-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+        }
+        .btn-hero:hover::before { left: 100%; }
+
+        .btn-hero:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-hero:active { transform: translateY(-1px); }
+        .btn-hero:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         /* Buttons */
         .btn {
@@ -242,6 +292,124 @@
         }
         .btn-outline:hover { background: var(--primary-color); color: var(--white); }
 
+        /* Services Section */
+        .services-section {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.05);
+        }
+
+        .service-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .service-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .service-description {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .service-features li {
+            padding: 5px 0;
+            font-size: 14px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
         /* Multi-Step Form */
         .order-form {
             background: var(--white);
@@ -249,6 +417,9 @@
             padding: 32px;
             box-shadow: var(--shadow-lg);
             margin: 40px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .form-header {
@@ -373,14 +544,14 @@
         .error-message.show { display: block; animation: fadeIn 0.2s ease; }
 
         /* Service Selection */
-        .services-grid {
+        .services-grid-form {
             display: grid;
             grid-template-columns: 1fr;
             gap: 16px;
             margin-bottom: 24px;
         }
 
-        .service-card {
+        .service-card-form {
             background: var(--white);
             border: 2px solid var(--border-color);
             border-radius: var(--radius);
@@ -392,16 +563,16 @@
             cursor: pointer;
             position: relative;
         }
-        .service-card:hover { border-color: var(--primary-color); background: rgba(14, 165, 233, 0.02); }
-        .service-card.selected {
+        .service-card-form:hover { border-color: var(--primary-color); background: rgba(14, 165, 233, 0.02); }
+        .service-card-form.selected {
             border-color: var(--primary-color);
             background: rgba(14, 165, 233, 0.05);
             box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
         }
-        .service-card.error { border-color: var(--danger-color); animation: shake 0.5s ease; }
+        .service-card-form.error { border-color: var(--danger-color); animation: shake 0.5s ease; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
-        .service-icon {
+        .service-icon-form {
             width: 50px;
             height: 50px;
             background: rgba(14, 165, 233, 0.1);
@@ -414,10 +585,10 @@
             flex-shrink: 0;
             transition: var(--transition);
         }
-        .service-card.selected .service-icon { background: var(--primary-color); color: var(--white); }
+        .service-card-form.selected .service-icon-form { background: var(--primary-color); color: var(--white); }
 
-        .service-info h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-        .service-info p { font-size: 14px; color: var(--text-light); }
+        .service-info-form h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .service-info-form p { font-size: 14px; color: var(--text-light); }
 
         /* Summary Section */
         .summary-box {
@@ -511,9 +682,11 @@
         .footer-text { font-size: 14px; color: var(--text-light); }
 
         /* Responsive */
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             .container { padding: 0 12px; }
-            .hero-title { font-size: 26px; }
+            .hero-title { font-size: 32px; }
+            .hero { padding: 60px 0; }
+            .services-grid { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
             .order-form { padding: 24px 20px; }
         }
@@ -545,10 +718,77 @@
             <div class="hero-content">
                 <h1 class="hero-title">رعاية تمريضية محترفة<br>في راحة منزلك</h1>
                 <p class="hero-subtitle">فحص مختبر، تضميد الجروح، وإعطاء الحقن بأعلى معايير الجودة</p>
-                <a href="#order-form" class="btn" id="orderNowBtn">
+                <a href="#order-form" class="btn-hero" id="orderNowBtn">
                     <i class="fas fa-calendar-check"></i>
                     اطلب الخدمة الآن
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="services">
+        <div class="container">
+            <h2 class="section-title">خدماتنا الطبية</h2>
+            <p class="section-subtitle">نقدم لكم أفضل الخدمات التمريضية في منزلك بأعلى معايير الجودة والاحترافية</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://z-cdn-media.chatglm.cn/files/96b4e4fc-2b0a-4f38-8190-73ea41b4286e.jpeg?auth_key=1870324977-b1d4f9e4b8724266911aa9fb6d123bff-0-ac0cfcbe1b18f2c159f8e5e535826744" alt="تضميد الجروح">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-band-aid"></i>
+                        </div>
+                        <h3 class="service-title">تضميد الجروح</h3>
+                        <p class="service-description">نقدم خدمة تضميد احترافية للجروح المختلفة باستخدام مواد معقمة وتقنيات حديثة لضمان الشفاء السريع والنظيف.</p>
+                        <ul class="service-features">
+                            <li>تضميد معقم ومهني</li>
+                            <li>متابعة الجروح اليومية</li>
+                            <li>تغيير الضمادات بانتظام</li>
+                            <li>نصائح للعناية بالجروح</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://z-cdn-media.chatglm.cn/files/ac75df5c-74a9-4a9c-ab34-eac9128c518c.jpeg?auth_key=1870324977-a27046c4210c44cea0705f7ca9d410fa-0-7126b3b881dce371ecc9dc4e80bea29e" alt="إعطاء الحقن">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <h3 class="service-title">إعطاء الحقن</h3>
+                        <p class="service-description">خدمة حقن آمنة واحترافية تحت إشراف ممرضين مؤهلين، مع استخدام إبر ومواد معقمة لضمان سلامتك وراحتك.</p>
+                        <ul class="service-features">
+                            <li>حقن عضلية ووريدية</li>
+                            <li>حقن تحت الجلد</li>
+                            <li>محاليل وريدية</li>
+                            <li>إعطاء الأدوية الموصوفة</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://z-cdn-media.chatglm.cn/files/6aebafb3-2db4-4d02-bfdc-1fee01de5b19.jpeg?auth_key=1870324977-a2118d6198bf49248063dc539d7c84b8-0-aa87618ab5e9d30ae0b39a7d9808732c" alt="الفحص المختبر">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <h3 class="service-title">الفحص المختبر</h3>
+                        <p class="service-description">فحوصات مختبرية دقيقة في الموقع مع نتائج سريعة، باستخدام أجهزة حديثة ومواد معتمدة لضمان الدقة والموثوقية.</p>
+                        <ul class="service-features">
+                            <li>سحب عينات دم</li>
+                            <li>فحوصات سريعة</li>
+                            <li>تحاليل كيميائية حيوية</li>
+                            <li>نتائج دقيقة وموثوقة</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -639,7 +879,7 @@
                 <div class="form-step" id="step-2">
                     <div class="form-group">
                         <label class="form-label">اختر الخدمة المطلوبة *</label>
-                        <div class="services-grid" id="servicesGrid" role="radiogroup" aria-required="true" aria-describedby="service-error">
+                        <div class="services-grid-form" id="servicesGrid" role="radiogroup" aria-required="true" aria-describedby="service-error">
                             <!-- Services will be populated by JS -->
                         </div>
                         <div class="error-message" id="service-error" role="alert"></div>
@@ -946,9 +1186,9 @@
             renderServices() {
                 const grid = document.getElementById('servicesGrid');
                 grid.innerHTML = CONFIG.SERVICES.map(service => `
-                    <div class="service-card" data-service-id="${service.id}" role="radio" aria-checked="false" tabindex="0">
-                        <div class="service-icon"><i class="fas ${service.icon}"></i></div>
-                        <div class="service-info">
+                    <div class="service-card-form" data-service-id="${service.id}" role="radio" aria-checked="false" tabindex="0">
+                        <div class="service-icon-form"><i class="fas ${service.icon}"></i></div>
+                        <div class="service-info-form">
                             <h3>${service.name}</h3>
                             <p>خدمة احترافية في منزلك</p>
                         </div>
@@ -956,13 +1196,13 @@
                 `).join('');
 
                 grid.addEventListener('click', (e) => {
-                    const card = e.target.closest('.service-card');
+                    const card = e.target.closest('.service-card-form');
                     if (card) this.selectService(card);
                 });
             }
 
             selectService(card) {
-                document.querySelectorAll('.service-card').forEach(c => {
+                document.querySelectorAll('.service-card-form').forEach(c => {
                     c.classList.remove('selected');
                     c.setAttribute('aria-checked', 'false');
                 });
@@ -1191,7 +1431,7 @@
                 if (draft.medicalHistory) document.getElementById('medicalHistory').value = draft.medicalHistory;
                 if (draft.notes) document.getElementById('notes').value = draft.notes;
                 if (draft.selectedServiceId) {
-                    document.querySelector(`.service-card[data-service-id="${draft.selectedServiceId}"]`)?.click();
+                    document.querySelector(`.service-card-form[data-service-id="${draft.selectedServiceId}"]`)?.click();
                 }
             }
 
